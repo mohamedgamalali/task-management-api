@@ -43,6 +43,9 @@ Ensure you have the following installed on your local machine:
 #### Run tests
 - `yarn test`
 
+#### Run API locally
+- `yarn dev`
+
 1. **Clone the repository:**
 
    ```bash
