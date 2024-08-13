@@ -1,0 +1,26 @@
+version: '3'
+services:
+  mongo1:
+    hostname: mongo1
+    container_name: localmongo1
+    image: mongo
+    ports:
+      - 27017:27017
+    entrypoint: ['/usr/bin/mongod', '--bind_ip_all', '--replSet', 'rs0']
+  mongosetup:
+    image: mongo
+    container_name: mongo_setup
+    depends_on:
+      - mongo1
+    restart: 'no'
+    command: sh -c 'sleep 5 && mongosh --host mongo1:27017 --eval "rs.initiate();"'
+  localstack:
+    container_name: "${LOCALSTACK_DOCKER_NAME-localstack_main}"
+    image: localstack/localstack
+    ports:
+      - "127.0.0.1:4566:4566"
+      - "127.0.0.1:4510-4559:4510-4559"
+    entrypoint: sh -c 'docker-entrypoint.sh& echo hello && sleep 5 && sleep infinity'
+volumes:
+  cache:
+    driver: local
