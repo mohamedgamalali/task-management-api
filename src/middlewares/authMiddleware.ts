@@ -22,6 +22,6 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
         req.userId = new Types.ObjectId(decoded.user._id as string);
         next();
     } catch (error) {
-        return res.status(401).json({ message: 'Token verification failed, authorization denied' });
+        return res.status(401).json({ message: 'Token verification failed, authorization denied', error });
     }
 };

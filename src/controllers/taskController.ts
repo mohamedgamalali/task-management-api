@@ -1,8 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { createTaskSchema } from '../routes/validation-schemas';
 import { z } from 'zod';
-import { TaskInstance, UserInstance } from "../models";
-import bcrypt from 'bcrypt';
+import { TaskInstance } from "../models";
 import { httpError, errorCodes } from '../utils/errorHandler';
 import { TaskDocument } from "../types";
 import { FilterQuery } from "mongoose";
@@ -44,7 +43,7 @@ export const getTasksController = async (req: Request<object, object,object, {pa
 
 export const getTaskByIdController = async (req: Request<{id: string}, object ,object, object >, res: Response, next: NextFunction) => {
     try {
-        let { id } = req.params;
+        const { id } = req.params;
         const task = await TaskInstance.findOne({_id: id, userId: req.userId});
         if (!task) {
             throw new httpError(404, 'Task not found with id', errorCodes.TASK_NOT_FOUND)
@@ -60,7 +59,7 @@ export const getTaskByIdController = async (req: Request<{id: string}, object ,o
 
 export const updateTaskController = async (req: Request<{id: string}, object ,z.infer<(typeof createTaskSchema)>, object >, res: Response, next: NextFunction) => {
     try {
-        let { id } = req.params;
+        const { id } = req.params;
         const { title, description, priority, status, dueDate } = req.body;
         const task = await TaskInstance.findOne({_id: id, userId: req.userId});
         if (!task) {
@@ -83,7 +82,7 @@ export const updateTaskController = async (req: Request<{id: string}, object ,z.
 
 export const deleteTaskController = async (req: Request<{id: string}, object ,object , object >, res: Response, next: NextFunction) => {
     try {
-        let { id } = req.params;
+        const { id } = req.params;
         const task = await TaskInstance.findOne({_id: id, userId: req.userId});
         if (!task) {
             throw new httpError(404, 'Task not found with id', errorCodes.TASK_NOT_FOUND)

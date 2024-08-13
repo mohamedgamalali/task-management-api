@@ -207,7 +207,7 @@ describe('task controller tests', () => {
         .expect(200);
 
       expect(res.body.tasks).toBeInstanceOf(Array);
-      res.body.tasks.forEach((task: any) => {
+      res.body.tasks.forEach((task) => {
         expect(task.status).toBe('pending');
         expect(task.priority).toBe('medium');
       });
